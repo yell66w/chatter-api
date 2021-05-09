@@ -1,7 +1,18 @@
-import { User } from "./User";
+import { User } from "../../models/User";
 
+interface createUserProps {
+  name: string;
+  email: string;
+  password: string;
+}
 export const resolvers = {
   Query: {
-    users: () => User.all(),
+    users: async () => await User.find(),
+  },
+  Mutation: {
+    createUser: async (_: any, { name, email, password }: createUserProps) => {
+      const newUser = new User({ name, email, password });
+      return await newUser.save();
+    },
   },
 };
