@@ -1,15 +1,16 @@
 import mongoose, { Schema } from "mongoose";
-import { userSchema } from "./User";
 export const messageSchema: Schema = new mongoose.Schema({
   content: {
     type: String,
   },
   to_user: {
-    type: userSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   from_user: {
-    type: userSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
   createdAt: {

@@ -10,10 +10,14 @@ export const userSchema: Schema = new mongoose.Schema({
     type: String,
   },
   sentMessages: {
-    type: [],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Message",
+    default: [],
   },
   receivedMessages: {
-    type: [],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Message",
+    default: [],
   },
   createdAt: {
     type: Date,

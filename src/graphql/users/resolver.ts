@@ -7,7 +7,8 @@ interface createUserProps {
 }
 export const resolvers = {
   Query: {
-    users: async () => await User.find(),
+    users: async () =>
+      await User.find().populate("sentMessages").populate("receivedMessages"),
   },
   Mutation: {
     createUser: async (_: any, { name, email, password }: createUserProps) => {

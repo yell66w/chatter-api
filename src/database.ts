@@ -9,9 +9,10 @@ export const startDatabase = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    mongoose.set("debug", true);
 
     console.log("MongoDB connected");
   } catch (error) {
-    console.error(error);
+    throw new Error(error.message);
   }
 };
