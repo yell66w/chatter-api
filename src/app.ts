@@ -4,6 +4,7 @@ import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import { startDatabase } from "./database";
 import { getUser } from "./utils/decodedToken";
+import { Server } from "socket.io";
 
 const PORT = 8000;
 const app = express();
@@ -26,13 +27,17 @@ const run = async () => {
         return err;
       },
     });
-    server.applyMiddleware({ app });
 
-    app.listen({ port: PORT }, () =>
+    server.applyMiddleware({ app });
+    const http = app.listen({ port: PORT }, () =>
       console.log(
         `🚀 🐱‍🏍 Server ready at http://localhost:${PORT}${server.graphqlPath}`
       )
     );
+    const io = new Server(http);
+    io.on("connection", (socket) => {
+      console.log("a user connected");
+    });
   } catch (error) {
     console.error(error.message);
   }
