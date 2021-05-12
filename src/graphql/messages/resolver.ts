@@ -12,7 +12,9 @@ export const resolvers = {
     messages: async (_: any, __: any, ctx: ApolloContext) => {
       if (ctx.user) {
         console.log(ctx.user);
-        return await Message.find().populate("to_user").populate("from_user");
+        return await Message.find()
+          .populate("to_user", "-password -sentMessages -receivedMessages")
+          .populate("from_user", "-password -sentMessages -receivedMessages");
       }
       throw new AuthenticationError("You need to be logged in to continue");
     },

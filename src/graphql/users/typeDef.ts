@@ -12,7 +12,13 @@ export const typeDef = gql`
     receivedMessages: [Message]
   }
   type Query {
-    users: [User]
+    users: [UserQuery]
+  }
+  type UserQuery {
+    id: ID!
+    name: String!
+    email: String!
+    createdAt: Date!
   }
   type Mutation {
     register(name: String!, email: String!, password: String!): AuthPayLoad!

@@ -3,8 +3,8 @@ export const typeDef = gql`
   type Message {
     id: ID!
     content: String!
-    to_user: User!
-    from_user: User!
+    to_user: UserQuery!
+    from_user: UserQuery!
     createdAt: Date
   }
   extend type Query {

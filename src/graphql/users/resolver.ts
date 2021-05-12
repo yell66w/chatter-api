@@ -18,9 +18,7 @@ export const resolvers = {
   Query: {
     users: async (_: any, __: any, ctx: ApolloContext) => {
       if (ctx.user) {
-        return await User.find()
-          .populate("sentMessages")
-          .populate("receivedMessages");
+        return await User.find().select("-password");
       }
       throw new AuthenticationError("You need to be logged in to continue!");
     },
