@@ -15,6 +15,10 @@ export const typeDef = gql`
     users: [User]
   }
   type Mutation {
-    createUser(name: String!, email: String!, password: String!): User!
+    register(name: String!, email: String!, password: String!): AuthPayLoad!
+    login(email: String!, password: String!): AuthPayLoad!
+  }
+  type AuthPayLoad {
+    token: String!
   }
 `;

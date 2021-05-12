@@ -11,6 +11,9 @@ export const typeDef = gql`
     messages: [Message]
   }
   extend type Mutation {
-    sendMessage(content: String!, to_user_id: ID!): Message!
+    sendMessage(content: String!, to_user_id: ID!): sendMessageReturn!
+  }
+  type sendMessageReturn {
+    sent: Boolean!
   }
 `;
