@@ -27,7 +27,6 @@ const run = async () => {
         return err;
       },
     });
-
     server.applyMiddleware({ app });
     const http = app.listen({ port: PORT }, () =>
       console.log(

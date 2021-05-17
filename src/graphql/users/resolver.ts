@@ -22,6 +22,12 @@ export const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in to continue!");
     },
+    getAuthUser: async (_: any, __: any, ctx: ApolloContext) => {
+      if (ctx.user) {
+        return ctx.user;
+      }
+      return null;
+    },
   },
   Mutation: {
     register: async (

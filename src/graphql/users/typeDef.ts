@@ -13,6 +13,7 @@ export const typeDef = gql`
   }
   type Query {
     users: [UserQuery]
+    getAuthUser: UserQuery
   }
   type UserQuery {
     id: ID!
