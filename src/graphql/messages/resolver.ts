@@ -24,7 +24,7 @@ export const resolvers = {
     chats: async (_: any, { limit = 0 }: myChatProps, ctx: ApolloContext) => {
       if (ctx.user) {
         return await Message.find({
-          $or: [{ to_user: ctx.user._id }, { from_user: ctx.user._id }],
+          to_user: ctx.user._id,
         })
           .populate("to_user", "-password -sentMessages -receivedMessages")
           .populate("from_user", "-password -sentMessages -receivedMessages")
