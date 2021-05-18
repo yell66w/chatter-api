@@ -24,6 +24,8 @@ export const resolvers = {
     },
     getAuthUser: async (_: any, __: any, ctx: ApolloContext) => {
       if (ctx.user) {
+        ctx.user.id = ctx.user._id;
+        ctx.user.createdAt = new Date(ctx.user.createdAt);
         return ctx.user;
       }
       return null;

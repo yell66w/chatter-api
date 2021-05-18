@@ -9,6 +9,7 @@ export const typeDef = gql`
   }
   extend type Query {
     messages: [Message]
+    chats(limit: Int): [Message]
   }
   extend type Mutation {
     sendMessage(content: String!, to_user_id: ID!): sendMessageReturn!

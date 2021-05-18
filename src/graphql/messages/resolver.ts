@@ -7,6 +7,9 @@ interface createMessageProps {
   content: string;
   to_user_id: string;
 }
+interface myChatProps {
+  limit: number;
+}
 export const resolvers = {
   Query: {
     messages: async (_: any, __: any, ctx: ApolloContext) => {
@@ -17,6 +20,16 @@ export const resolvers = {
           .populate("from_user", "-password -sentMessages -receivedMessages");
       }
       throw new AuthenticationError("You need to be logged in to continue");
+    },
+    chats: async (_: any, { limit = 0 }: myChatProps, ctx: ApolloContext) => {
+      if (ctx.user) {
+        return await Message.find({
+          $or: [{ to_user: ctx.user._id }, { from_user: ctx.user._id }],
+        })
+          .populate("to_user", "-password -sentMessages -receivedMessages")
+          .populate("from_user", "-password -sentMessages -receivedMessages")
+          .limit(limit);
+      }
     },
   },
   Mutation: {
