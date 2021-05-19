@@ -3,6 +3,7 @@ export const typeDef = gql`
   type Message {
     id: ID!
     content: String!
+    conversation: ConversationQuery!
     to_user: UserQuery!
     from_user: UserQuery!
     createdAt: Date
@@ -11,8 +12,13 @@ export const typeDef = gql`
     messages: [Message]
     chats(limit: Int): [Message]
   }
+
   extend type Mutation {
-    sendMessage(content: String!, to_user_id: ID!): sendMessageReturn!
+    sendMessage(
+      content: String!
+      to_user_id: ID!
+      conversation_id: ID!
+    ): sendMessageReturn!
   }
   type sendMessageReturn {
     sent: Boolean!

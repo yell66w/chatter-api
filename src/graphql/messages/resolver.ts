@@ -1,4 +1,5 @@
 import { AuthenticationError } from "apollo-server-express";
+import { Conversation } from "../../models/Conversation";
 import { Message } from "../../models/Message";
 import { User } from "../../models/User";
 import { ApolloContext } from "../users/resolver";
@@ -6,6 +7,7 @@ import { ApolloContext } from "../users/resolver";
 interface createMessageProps {
   content: string;
   to_user_id: string;
+  conversation_id: string;
 }
 interface myChatProps {
   limit: number;
@@ -17,7 +19,8 @@ export const resolvers = {
         console.log(ctx.user);
         return await Message.find()
           .populate("to_user", "-password -sentMessages -receivedMessages")
-          .populate("from_user", "-password -sentMessages -receivedMessages");
+          .populate("from_user", "-password -sentMessages -receivedMessages")
+          .populate("conversation", "-creator -messages -participants");
       }
       throw new AuthenticationError("You need to be logged in to continue");
     },
@@ -35,21 +38,24 @@ export const resolvers = {
   Mutation: {
     sendMessage: async (
       _: any,
-      { content, to_user_id }: createMessageProps,
+      { content, to_user_id, conversation_id }: createMessageProps,
       ctx: ApolloContext
     ) => {
       if (ctx.user) {
         const to_user = await User.findById(to_user_id);
         const from_user = await User.findById(ctx.user._id);
-
+        const conversation = await Conversation.findById(conversation_id);
         if (to_user && from_user) {
           const message = await new Message({
             content,
             to_user: to_user_id,
             from_user: ctx.user._id,
+            conversationId: conversation_id,
           }).save();
+          conversation.messages.push(message._id);
           from_user.sentMessages.push(message._id);
           to_user.receivedMessages.push(message._id);
+          await conversation.save();
           await from_user.save();
           await to_user.save();
           return {

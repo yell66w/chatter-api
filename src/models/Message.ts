@@ -13,6 +13,11 @@ export const messageSchema: Schema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  conversation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Conversation",
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
